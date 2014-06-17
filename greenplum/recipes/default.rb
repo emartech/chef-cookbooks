@@ -1,5 +1,7 @@
 %w[mc ed].each { |pkg| package pkg }
 
+raise "You must specify the path to GreenPlum DB installer file (.bin)" unless File.exists?(node['greenplum']['binary'])
+
 template "/etc/hosts" do
   source "hosts.erb"
 end
@@ -18,16 +20,12 @@ execute "generate ssh key" do
             done"
 end
 
-cookbook_file "/tmp/greenplum-installer.bin" do
-  source "greenplum-db-#{node['greenplum']['version']}-build-1-RHEL5-x86_64.bin"
-end
-
 execute "extract greenplum" do
   creates "/usr/local/greenplum-db-#{node['greenplum']['version']}/greenplum_path.sh"
 
   command "mkdir -p /usr/local/greenplum-db-#{node['greenplum']['version']}
-            SKIP=`awk '/^__END_HEADER__/ {print NR + 1; exit 0; }' /tmp/greenplum-installer.bin`;
-            tail -n +${SKIP} /tmp/greenplum-installer.bin | tar -xzf - -C /usr/local/greenplum-db-#{node['greenplum']['version']}"
+            SKIP=`awk '/^__END_HEADER__/ {print NR + 1; exit 0; }' #{node['greenplum']['binary']}`;
+            tail -n +${SKIP} #{node['greenplum']['binary']} | tar -xzf - -C /usr/local/greenplum-db-#{node['greenplum']['version']}"
 end
 
 execute "set GP_HOME to the correct path" do
