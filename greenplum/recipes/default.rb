@@ -1,4 +1,4 @@
-%w[mc ed].each { |pkg| package pkg }
+package 'ed'
 
 raise "You must specify the path to GreenPlum DB installer file (.bin)" unless File.exists?(node['greenplum']['binary'])
 
