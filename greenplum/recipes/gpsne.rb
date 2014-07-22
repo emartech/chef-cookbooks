@@ -1,0 +1,1 @@
+# please use the gpsne resource instead
