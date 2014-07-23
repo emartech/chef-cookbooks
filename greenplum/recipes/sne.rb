@@ -3,7 +3,8 @@
 package 'ed'
 
 raise "You must specify the path to GreenPlum DB installer file (.bin)" unless File.exists?(node['greenplum']['binary'])
-default['greenplum']['version'] = default['greenplum']['binary'].match(/db-(?<version>(\d+\.){3}\d+)/)[:version]
+
+node['greenplum']['version'] = node['greenplum']['binary'].match(/db-(?<version>(\d+\.){3}\d+)/)[:version]
 
 template "/etc/hosts" do
   source "hosts.erb"

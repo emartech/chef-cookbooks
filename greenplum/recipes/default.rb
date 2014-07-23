@@ -1,1 +1,1 @@
-# please use the gpsne resource instead
+# please use the sne resource instead
